@@ -64,10 +64,10 @@ public class svlCrearAlumno extends HttpServlet {
             alu.setTelefono(telefono);
             
             Usuario user = new Usuario();
-            
-            user.setCorreo(correo);
-            user.setContrasenia(pass);
-            user.setId(id_alumno);
+
+            user.setIdAlumno(id_alumno);
+            user.setNombreUsuario(nombre);
+            user.setPassword(pass);
             
             createalum(alu);
             createUser(user);

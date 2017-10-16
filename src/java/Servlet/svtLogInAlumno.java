@@ -18,7 +18,15 @@ import javax.servlet.http.HttpSession;
 import Servicios_Cem.*;
 import com.sun.org.apache.xml.internal.serialize.XML11Serializer;
 import java.beans.XMLEncoder;
+import java.io.StringWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.namespace.QName;
+import javax.xml.ws.Response;
 
 /**
  *
@@ -37,7 +45,7 @@ public class svtLogInAlumno extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, JAXBException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             HttpSession sesion = request.getSession();
@@ -45,29 +53,44 @@ public class svtLogInAlumno extends HttpServlet {
             String user = request.getParameter("user");
             String pass = request.getParameter("pass");
             
-            Usuario usuario = new Usuario(user, pass, "1");
-            ValidarUsuario val = new ValidarUsuario();
-            ObjectFactory fac = new ObjectFactory();
-            JAXBElement<String> str= fac.createValidarUsuarioUserPass(pass);
-            val.setUserPass(str);
-            ValidarUsuarioResponse vali = new ValidarUsuarioResponse();
-            if (vali.isValidarUsuarioResult()==true) 
+            Usuario usuario = new Usuario();
+
+            usuario.setIdAlumno("");
+            usuario.setNombreUsuario(user);
+            usuario.setPassword(pass);
+            usuario.setIdAdministrativo("");
+            usuario.setIdRol("");
+            usuario.setIdEncargadoCel("");
+            usuario.setIdFamilia("");
+            
+           StringWriter writer = new StringWriter();
+//        JAXBContext contex = JAXBContext.newInstance(Usuario.class);
+//        Marshaller m = contex.createMarshaller();
+//        m.marshal(new JAXBElement(new QName(Usuario.class.getSimpleName()),Usuario.class,usuario), writer);
+//        ObjectFactory fac = new ObjectFactory();
+//        JAXBElement<String> str= fac.createCrearUsuarioXml(writer.toString());
+
+            JAXBContext jc = JAXBContext.newInstance(Usuario.class);
+            QName QName = new QName(Usuario.class.getSimpleName());
+            
+            Marshaller marshaller = jc.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            
+            marshaller.marshal(new JAXBElement(QName,Usuario.class,usuario),writer);
+            ObjectFactory factory = new ObjectFactory();
+            JAXBElement<String> str= factory.createCrearUsuarioXml(writer.toString());
+            
+            ValidarUsuario vali = new ValidarUsuario();
+            ValidarUsuarioResponse resp = new ValidarUsuarioResponse();
+            vali.setUserPass(str);
+            if(resp.isValidarUsuarioResult()==true)
             {
-                 sesion.setAttribute("usuario", usuario);
-            
                 response.sendRedirect("Alumno.jsp");
-                
-            }else{
-                response.sendRedirect("index.jsp");
+            }else
+            {
+                response.sendRedirect("logAlumno.jsp");
             }
-            
-        
-            
-            
-           
-            
-            
-            
+       
         }
     }
 
@@ -83,7 +106,11 @@ public class svtLogInAlumno extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (JAXBException ex) {
+            Logger.getLogger(svtLogInAlumno.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -97,7 +124,11 @@ public class svtLogInAlumno extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (JAXBException ex) {
+            Logger.getLogger(svtLogInAlumno.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

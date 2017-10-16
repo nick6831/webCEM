@@ -17,6 +17,8 @@ import Beans.Usuario;
 import Servicios_Cem.*;
 import javax.xml.bind.JAXBElement;
 import java.io.StringWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -71,9 +73,8 @@ public class svlCrearFamilia extends HttpServlet {
             
             Usuario user = new Usuario();
             
-            user.setId(id);
-            user.setCorreo(correo);
-            user.setContrasenia(pass);
+            user.setIdFamilia(id);
+            user.setPassword(pass);
             
             createUser(user);
             createfam(fam);
@@ -114,7 +115,11 @@ public class svlCrearFamilia extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (JAXBException ex) {
+            Logger.getLogger(svtLogInAlumno.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -128,7 +133,11 @@ public class svlCrearFamilia extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (JAXBException ex) {
+            Logger.getLogger(svtLogInAlumno.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

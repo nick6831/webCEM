@@ -40,7 +40,15 @@ public class svtLogInFamilia extends HttpServlet {
             String user = request.getParameter("user");
             String pass = request.getParameter("pass");
             
-            Usuario usuario = new Usuario(user, pass, " ");
+            Usuario usuario = new Usuario();
+            
+            usuario.setIdAlumno("");
+            usuario.setNombreUsuario(user);
+            usuario.setPassword(pass);
+            usuario.setIdAdministrativo("");
+            usuario.setIdRol("");
+            usuario.setIdEncargadoCel("");
+            usuario.setIdFamilia("");
             
             sesion.setAttribute("usuario", usuario);
             
