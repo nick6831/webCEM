@@ -14,14 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Beans.Alumno;
 import Beans.Usuario;
-import Beans.XMLSerializer;
 import Servicios_Cem.*;
 import javax.xml.bind.JAXBElement;
-import java.beans.XMLEncoder;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.StringWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,6 +54,7 @@ public class svlCrearAlumno extends HttpServlet {
             
             
             Alumno alu = new Alumno();
+            
             alu.setIdAlumno(alu.ObtenerRut(id_alumno));
             alu.setDv(alu.ObtenerDv(id_alumno));
             alu.setNombres(nombre);
@@ -67,10 +62,13 @@ public class svlCrearAlumno extends HttpServlet {
             alu.setApePaterno(apellido_ma);
             alu.setCorreo(correo);
             alu.setTelefono(telefono);
+            
             Usuario user = new Usuario();
+            
             user.setCorreo(correo);
             user.setContrasenia(pass);
             user.setId(id_alumno);
+            
             createalum(alu);
             createUser(user);
             

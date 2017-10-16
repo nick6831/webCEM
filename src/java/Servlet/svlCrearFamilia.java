@@ -12,6 +12,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import Beans.Familia;
+import Beans.Usuario;
+import Servicios_Cem.*;
+import javax.xml.bind.JAXBElement;
+import java.io.StringWriter;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.namespace.QName;
 
 /**
  *
@@ -30,19 +39,68 @@ public class svlCrearFamilia extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, JAXBException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String id;
-            String nombre;
-            String correo;
-            String telefono;
-            String direccion;
-            String ciudad;
-            String pais;
-            String reserva;
+            String id = request.getParameter("id");
+            String nombre = request.getParameter("nombre");
+            String apellidoPaterno = request.getParameter("apellidoPaterno");
+            String apellidoMaterno = request.getParameter("apellidoMaterno");
+            String identificacion = request.getParameter("identificacion");
+            String correo = request.getParameter("correo");
+            String telefono = request.getParameter("telefono");
+            String direccion = request.getParameter("direccion");
+            String pais = request.getParameter("pais");
+            String ciudad = request.getParameter("ciudad");
+            String estado = request.getParameter("estado");
+            String pass = request.getParameter("id_pass");
+            
+            Familia fam = new Familia();
+            fam.setId(id);
+            fam.setNombre(nombre);
+            fam.setApellidoPaterno(apellidoPaterno);
+            fam.setApellidoMaterno(apellidoMaterno);
+            fam.setIdentificacion(identificacion);
+            fam.setCorreo(correo);
+            fam.setTelefono(telefono);
+            fam.setDireccion(direccion);
+            fam.setPais(pais);
+            fam.setCiudad(ciudad);
+            fam.setEstado(estado);
+            
+            Usuario user = new Usuario();
+            
+            user.setId(id);
+            user.setCorreo(correo);
+            user.setContrasenia(pass);
+            
+            createUser(user);
+            createfam(fam);
+        }
     }
+        
+        private void createUser(Usuario user) throws JAXBException {
+            StringWriter writer= new StringWriter();
+            JAXBContext con = JAXBContext.newInstance(Usuario.class);
+            Marshaller m = con.createMarshaller();
+            m.marshal(new JAXBElement(new QName(Usuario.class.getSimpleName()),Usuario.class,user), writer);
+            ObjectFactory fac = new ObjectFactory();
+            JAXBElement<String> us = fac.createCrearAlumnoXml(writer.toString());
+            CrearUsuario crear = new CrearUsuario();
+            crear.setXml(us);
+        }
+
+        private void createfam(Familia fam) throws JAXBException {
+            StringWriter writer= new StringWriter();
+            JAXBContext con = JAXBContext.newInstance(Familia.class);
+            Marshaller m = con.createMarshaller();
+            m.marshal(new JAXBElement(new QName(Familia.class.getSimpleName()),Familia.class,fam), writer);
+            ObjectFactory fac = new ObjectFactory();
+            JAXBElement<String> alum = fac.createCrearAlumnoXml(writer.toString());
+            CrearFamiliaAnfitriona crear = new CrearFamiliaAnfitriona();
+            crear.setXml(alum);
+        }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

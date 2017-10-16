@@ -10,15 +10,27 @@ package Beans;
  * @author portafolio
  */
 public class Familia {
+    public String _id;
     public String _nombre;
+    public String _apellidoPaterno;
+    public String _apellidoMaterno;
+    public String _identificacion;
     public String _correo;
     public String _telefono;
     public String _direccion;
-    public String _ciudad;
     public String _pais;
-    public String _reserva;
+    public String _ciudad;
+    public String _estado;
 
     public Familia() {
+    }
+
+    public String getId() {
+        return _id;
+    }
+
+    public void setId(String _id) {
+        this._id = _id;
     }
 
     public String getNombre() {
@@ -27,6 +39,30 @@ public class Familia {
 
     public void setNombre(String _nombre) {
         this._nombre = _nombre;
+    }
+
+    public String getApellidoPaterno() {
+        return _apellidoPaterno;
+    }
+
+    public void setApellidoPaterno(String _apellidoPaterno) {
+        this._apellidoPaterno = _apellidoPaterno;
+    }
+
+    public String getApellidoMaterno() {
+        return _apellidoMaterno;
+    }
+
+    public void setApellidoMaterno(String _apellidoMaterno) {
+        this._apellidoMaterno = _apellidoMaterno;
+    }
+
+    public String getIdentificacion() {
+        return _identificacion;
+    }
+
+    public void setIdentificacion(String _identificacion) {
+        this._identificacion = _identificacion;
     }
 
     public String getCorreo() {
@@ -53,14 +89,6 @@ public class Familia {
         this._direccion = _direccion;
     }
 
-    public String getCiudad() {
-        return _ciudad;
-    }
-
-    public void setCiudad(String _ciudad) {
-        this._ciudad = _ciudad;
-    }
-
     public String getPais() {
         return _pais;
     }
@@ -69,14 +97,20 @@ public class Familia {
         this._pais = _pais;
     }
 
-    public String getReserva() {
-        return _reserva;
+    public String getCiudad() {
+        return _ciudad;
     }
 
-    public void setReserva(String _reserva) {
-        this._reserva = _reserva;
+    public void setCiudad(String _ciudad) {
+        this._ciudad = _ciudad;
     }
-    
-    
-    
+
+    public String getEstado() {
+        return _estado;
+    }
+
+    public void setEstado(String _estado) {
+        this._estado = _estado;
+    }
+
 }
