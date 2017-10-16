@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import Beans.Alumno;
 import Beans.Usuario;
 import Beans.XMLSerializer;
-import Servicio_de_Servicio.*;
+import Servicios_Cem.*;
 import javax.xml.bind.JAXBElement;
 import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
@@ -64,6 +64,7 @@ public class svlCrearAlumno extends HttpServlet {
             alu.setDv(alu.ObtenerDv(id_alumno));
             alu.setNombres(nombre);
             alu.setApePaterno(apellido_pa);
+            alu.setApePaterno(apellido_ma);
             alu.setCorreo(correo);
             alu.setTelefono(telefono);
             Usuario user = new Usuario();

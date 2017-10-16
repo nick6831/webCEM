@@ -21,8 +21,6 @@ public class Familia {
     public Familia() {
     }
 
-    
-    
     public String getNombre() {
         return _nombre;
     }

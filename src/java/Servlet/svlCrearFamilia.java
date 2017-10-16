@@ -5,8 +5,6 @@
  */
 package Servlet;
 
-import Beans.Usuario;
-import Beans.XMLSerializer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -14,18 +12,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import Servicios_Cem.*;
-import com.sun.org.apache.xml.internal.serialize.XML11Serializer;
-import java.beans.XMLEncoder;
-import javax.xml.bind.JAXBElement;
 
 /**
  *
- * @author portafolio
+ * @author nickm
  */
-@WebServlet(name = "svtLogInAlumno", urlPatterns = {"/svtLogInAlumno"})
-public class svtLogInAlumno extends HttpServlet {
+@WebServlet(name = "svlCrearFamilia", urlPatterns = {"/svlCrearFamilia"})
+public class svlCrearFamilia extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,35 +33,15 @@ public class svtLogInAlumno extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            HttpSession sesion = request.getSession();
-            
-            String user = request.getParameter("user");
-            String pass = request.getParameter("pass");
-            
-            Usuario usuario = new Usuario(user, pass, "1");
-            ValidarUsuario val = new ValidarUsuario();
-            ObjectFactory fac = new ObjectFactory();
-            JAXBElement<String> str= fac.createValidarUsuarioUserPass(pass);
-            val.setUserPass(str);
-            ValidarUsuarioResponse vali = new ValidarUsuarioResponse();
-            if (vali.isValidarUsuarioResult()==true) 
-            {
-                 sesion.setAttribute("usuario", usuario);
-            
-                response.sendRedirect("Alumno.jsp");
-                
-            }else{
-                response.sendRedirect("index.jsp");
-            }
-            
-        
-            
-            
-           
-            
-            
-            
-        }
+            /* TODO output your page here. You may use following sample code. */
+            String id;
+            String nombre;
+            String correo;
+            String telefono;
+            String direccion;
+            String ciudad;
+            String pais;
+            String reserva;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
