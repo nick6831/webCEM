@@ -63,12 +63,14 @@ public class svtLogInAlumno extends HttpServlet {
             usuario.setIdEncargadoCel("");
             usuario.setIdFamilia("");
             
-           StringWriter writer = new StringWriter();
 //        JAXBContext contex = JAXBContext.newInstance(Usuario.class);
 //        Marshaller m = contex.createMarshaller();
 //        m.marshal(new JAXBElement(new QName(Usuario.class.getSimpleName()),Usuario.class,usuario), writer);
 //        ObjectFactory fac = new ObjectFactory();
 //        JAXBElement<String> str= fac.createCrearUsuarioXml(writer.toString());
+
+//            Generar XML
+            StringWriter writer = new StringWriter();
 
             JAXBContext jc = JAXBContext.newInstance(Usuario.class);
             QName QName = new QName(Usuario.class.getSimpleName());
@@ -80,10 +82,13 @@ public class svtLogInAlumno extends HttpServlet {
             ObjectFactory factory = new ObjectFactory();
             JAXBElement<String> str= factory.createCrearUsuarioXml(writer.toString());
             
+            
             ValidarUsuario vali = new ValidarUsuario();
             ValidarUsuarioResponse resp = new ValidarUsuarioResponse();
+           
             vali.setUserPass(str);
-            if(resp.isValidarUsuarioResult()==true)
+            
+            if(resp.isValidarUsuarioResult())
             {
                 response.sendRedirect("Alumno.jsp");
             }else
