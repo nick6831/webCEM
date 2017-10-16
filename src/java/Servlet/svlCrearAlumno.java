@@ -22,7 +22,13 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.StringWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.namespace.QName;
 /**
  *
  * @author nickm
@@ -40,7 +46,7 @@ public class svlCrearAlumno extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, JAXBException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -64,11 +70,37 @@ public class svlCrearAlumno extends HttpServlet {
             user.setCorreo(correo);
             user.setContrasenia(pass);
             user.setId(id_alumno);
+            createalum(alu);
+            createUser(user);
+            
            
        
            
             
         }
+        
+    }
+
+    private void createUser(Usuario user) throws JAXBException {
+        StringWriter writer= new StringWriter();
+        JAXBContext con = JAXBContext.newInstance(Usuario.class);
+        Marshaller m = con.createMarshaller();
+        m.marshal(new JAXBElement(new QName(Usuario.class.getSimpleName()),Usuario.class,user), writer);
+        ObjectFactory fac = new ObjectFactory();
+        JAXBElement<String> us = fac.createCrearAlumnoXml(writer.toString());
+        CrearUsuario crear = new CrearUsuario();
+        crear.setXml(us);
+    }
+
+    private void createalum(Alumno alu) throws JAXBException {
+        StringWriter writer= new StringWriter();
+        JAXBContext con = JAXBContext.newInstance(Alumno.class);
+        Marshaller m = con.createMarshaller();
+        m.marshal(new JAXBElement(new QName(Alumno.class.getSimpleName()),Alumno.class,alu), writer);
+        ObjectFactory fac = new ObjectFactory();
+        JAXBElement<String> alum = fac.createCrearAlumnoXml(writer.toString());
+        CrearAlumno crear = new CrearAlumno();
+        crear.setXml(alum);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -83,7 +115,11 @@ public class svlCrearAlumno extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (JAXBException ex) {
+            Logger.getLogger(svlCrearAlumno.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -97,7 +133,11 @@ public class svlCrearAlumno extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (JAXBException ex) {
+            Logger.getLogger(svlCrearAlumno.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
