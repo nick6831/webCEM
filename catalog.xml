@@ -3,5 +3,5 @@
     <system systemId="http://localhost:6627/Servicios.svc?wsdl" uri="src/conf/xml-resources/web-service-references/Servicios_3/wsdl/localhost_6627/Servicios.svc.wsdl"/>
     <system systemId="http://localhost:6627/Servicios.svc?xsd=xsd0" uri="src/conf/xml-resources/web-service-references/Servicios_3/wsdl/localhost_6627/Servicios.svc.xsd_xsd0.xsd"/>
     <system systemId="http://localhost:6627/Servicios.svc?xsd=xsd1" uri="src/conf/xml-resources/web-service-references/Servicios_3/wsdl/localhost_6627/Servicios.svc.xsd_xsd1.xsd"/>
-    <system systemId="http://localhost:6627/Servicios.svc?singleWsdl" uri="src/conf/xml-resources/web-service-references/Servicios_5/wsdl/localhost_6627/Servicios.svc.singlewsdl.wsdl"/>
+    <system systemId="http://localhost:6627/Servicios.svc?singleWsdl" uri="src/conf/xml-resources/web-service-references/Servicios/wsdl/localhost_6627/Servicios.svc.singlewsdl.wsdl"/>
 </catalog>

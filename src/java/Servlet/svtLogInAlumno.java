@@ -55,13 +55,13 @@ public class svtLogInAlumno extends HttpServlet {
             
             Usuario usuario = new Usuario();
 
-            usuario.setIdAlumno("");
+//            usuario.setIdAlumno("");
             usuario.setNombreUsuario(user);
             usuario.setPassword(pass);
-            usuario.setIdAdministrativo("");
-            usuario.setIdRol("");
-            usuario.setIdEncargadoCel("");
-            usuario.setIdFamilia("");
+//            usuario.setIdAdministrativo("");
+//            usuario.setIdRol("");
+//            usuario.setIdEncargadoCel("");
+//            usuario.setIdFamilia("");
             
 //        JAXBContext contex = JAXBContext.newInstance(Usuario.class);
 //        Marshaller m = contex.createMarshaller();
@@ -82,10 +82,17 @@ public class svtLogInAlumno extends HttpServlet {
             ObjectFactory factory = new ObjectFactory();
             JAXBElement<String> str= factory.createCrearUsuarioXml(writer.toString());
             
+            Servicios ser = new Servicios();
+            
+            ser.getBasicHttpBindingIServicios().validarUsuario(str.getValue());
             
             ValidarUsuario vali = new ValidarUsuario();
             ValidarUsuarioResponse resp = new ValidarUsuarioResponse();
-           
+            
+            LeerUsuario u = new LeerUsuario();
+            u.setXml(str);
+            u.getXml();
+            
             vali.setUserPass(str);
             
             if(resp.isValidarUsuarioResult())
