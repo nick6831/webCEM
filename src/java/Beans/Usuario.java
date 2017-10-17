@@ -86,5 +86,4 @@ public class Usuario {
         this._idEncargadoCel = _idEncargadoCel;
     }
     
-    
 }

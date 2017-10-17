@@ -25,6 +25,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Response;
 
@@ -55,13 +56,16 @@ public class svtLogInAlumno extends HttpServlet {
             
             Usuario usuario = new Usuario();
 
-//            usuario.setIdAlumno("");
+            usuario.setIdUsuario("0");
             usuario.setNombreUsuario(user);
             usuario.setPassword(pass);
-//            usuario.setIdAdministrativo("");
-//            usuario.setIdRol("");
-//            usuario.setIdEncargadoCel("");
-//            usuario.setIdFamilia("");
+            usuario.setIdAlumno("0");
+            usuario.setIdAdministrativo("0");
+            usuario.setIdRol("0");
+            usuario.setIdFamilia("0");
+            usuario.setIdEncargadoCel("0");
+            
+            
             
 //        JAXBContext contex = JAXBContext.newInstance(Usuario.class);
 //        Marshaller m = contex.createMarshaller();
@@ -77,26 +81,19 @@ public class svtLogInAlumno extends HttpServlet {
             
             Marshaller marshaller = jc.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-16");
             
             marshaller.marshal(new JAXBElement(QName,Usuario.class,usuario),writer);
             ObjectFactory factory = new ObjectFactory();
-            JAXBElement<String> str= factory.createCrearUsuarioXml(writer.toString());
+            JAXBElement<String> str = factory.createCrearUsuarioXml(writer.toString());
             
             Servicios ser = new Servicios();
             
-            ser.getBasicHttpBindingIServicios().validarUsuario(str.getValue());
+            boolean b = ser.getBasicHttpBindingIServicios().validarUsuario(str.getValue());
             
-            ValidarUsuario vali = new ValidarUsuario();
-            ValidarUsuarioResponse resp = new ValidarUsuarioResponse();
-            
-            LeerUsuario u = new LeerUsuario();
-            u.setXml(str);
-            u.getXml();
-            
-            vali.setUserPass(str);
-            
-            if(resp.isValidarUsuarioResult())
+            if(b)
             {
+                sesion.setAttribute("usuario", usuario);
                 response.sendRedirect("Alumno.jsp");
             }else
             {
