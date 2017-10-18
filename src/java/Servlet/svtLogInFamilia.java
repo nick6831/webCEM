@@ -42,13 +42,13 @@ public class svtLogInFamilia extends HttpServlet {
             
             Usuario usuario = new Usuario();
             
-            usuario.setIdAlumno("");
-            usuario.setNombreUsuario(user);
-            usuario.setPassword(pass);
-            usuario.setIdAdministrativo("");
-            usuario.setIdRol("");
-            usuario.setIdEncargadoCel("");
-            usuario.setIdFamilia("");
+//            usuario.setIdAlumno("");
+//            usuario.setNombreUsuario(user);
+//            usuario.setPassword(pass);
+//            usuario.setIdAdministrativo("");
+//            usuario.setIdRol("");
+//            usuario.setIdEncargadoCel("");
+//            usuario.setIdFamilia("");
             
             sesion.setAttribute("usuario", usuario);
             

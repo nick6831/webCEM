@@ -5,6 +5,7 @@
  */
 package Servlet;
 
+import Beans.Alumno;
 import Beans.Usuario;
 import Beans.XMLSerializer;
 import java.io.IOException;
@@ -18,9 +19,12 @@ import javax.servlet.http.HttpSession;
 import Servicios_Cem.*;
 import com.sun.org.apache.xml.internal.serialize.XML11Serializer;
 import java.beans.XMLEncoder;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.text.Document;
+import javax.xml.bind.Element;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
@@ -28,6 +32,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Response;
+import org.w3c.dom.NodeList;
 
 /**
  *
@@ -56,23 +61,15 @@ public class svtLogInAlumno extends HttpServlet {
             
             Usuario usuario = new Usuario();
 
-            usuario.setIdUsuario("0");
-            usuario.setNombreUsuario(user);
-            usuario.setPassword(pass);
-            usuario.setIdAlumno("0");
-            usuario.setIdAdministrativo("0");
-            usuario.setIdRol("0");
-            usuario.setIdFamilia("0");
-            usuario.setIdEncargadoCel("0");
-            
-            
-            
-//        JAXBContext contex = JAXBContext.newInstance(Usuario.class);
-//        Marshaller m = contex.createMarshaller();
-//        m.marshal(new JAXBElement(new QName(Usuario.class.getSimpleName()),Usuario.class,usuario), writer);
-//        ObjectFactory fac = new ObjectFactory();
-//        JAXBElement<String> str= fac.createCrearUsuarioXml(writer.toString());
-
+            usuario.IdUsuario = "0";
+            usuario.NomUsuario = user;
+            usuario.Password = pass;
+            usuario.IdAlumno = "0";
+            usuario.IdAdministrativo = "0";
+            usuario.IdRol = "0";
+            usuario.IdFamilia = "0";
+            usuario.IdEncargadoCel = "0";
+           
 //            Generar XML
             StringWriter writer = new StringWriter();
 
@@ -90,18 +87,60 @@ public class svtLogInAlumno extends HttpServlet {
             Servicios ser = new Servicios();
             
             boolean b = ser.getBasicHttpBindingIServicios().validarUsuario(str.getValue());
+//            String str2 = ser.getBasicHttpBindingIServicios().leerUsuario(str.getValue());
+
+            Alumno alumnos = new Alumno();
+            alumnos.IdAlumno = "17880166";
+            alumnos.Dv = "0";
+            alumnos.ApeMaterno = "0";
+            alumnos.ApePaterno = "0";
+            alumnos.Correo = "0";
+            alumnos.EstadoMora = "0";
+            alumnos.Nombres = "0";
+            alumnos.Reserva = "0";
+            alumnos.Telefono = "0";
             
+            StringWriter writer2 = new StringWriter();
+
+            JAXBContext jc2 = JAXBContext.newInstance(Alumno.class);
+            QName QName2 = new QName(Alumno.class.getSimpleName());
+            
+            Marshaller marshaller2 = jc2.createMarshaller();
+            marshaller2.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller2.setProperty(Marshaller.JAXB_ENCODING, "UTF-16");
+            
+            marshaller2.marshal(new JAXBElement(QName2,Alumno.class,alumnos),writer2);
+            ObjectFactory factory2 = new ObjectFactory();
+            JAXBElement<String> str2 = factory2.createCrearUsuarioXml(writer2.toString());
+
+            Servicios ser2 = new Servicios();
+            
+            String alu = ser2.getBasicHttpBindingIServicios().leerAlumno(str2.getValue());
+            
+
+            
+//            Forma 2 
+//            JAXBContext jaxbContext = JAXBContext.newInstance(Alumno.class);
+//            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+//
+//            StringReader reader = new StringReader(alu);
+//            Alumno alum = (Alumno)unmarshaller.unmarshal(reader);
+
             if(b)
             {
                 sesion.setAttribute("usuario", usuario);
                 response.sendRedirect("Alumno.jsp");
             }else
             {
+                sesion.invalidate();
                 response.sendRedirect("logAlumno.jsp");
             }
        
         }
     }
+    
+
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

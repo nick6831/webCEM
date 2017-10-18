@@ -73,8 +73,8 @@ public class svlCrearFamilia extends HttpServlet {
             
             Usuario user = new Usuario();
             
-            user.setIdFamilia(id);
-            user.setPassword(pass);
+            user.IdFamilia = id;
+            user.Password = pass;
             
             createUser(user);
             createfam(fam);
