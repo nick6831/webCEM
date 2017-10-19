@@ -5,61 +5,74 @@
  */
 package Beans;
 
-import Servicios_Cem.ObjectFactory;
-import com.sun.istack.Nullable;
 import java.io.StringWriter;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.namespace.QName;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonWriter;
 
 /**
  *
  * @author nickm
  */
 public class Alumno {
-        @Nullable
-        public String IdAlumno;
-        @Nullable
+
+        public int IdAlumno;
         public String Dv;
-        @Nullable
         public String Nombres;
-        @Nullable
-        public String ApePaterno; 
-        @Nullable
+        public String ApePaterno;
         public String ApeMaterno; 
-        @Nullable
         public String Correo;
-        @Nullable
-        public String Reserva;
-        @Nullable
-        public String Telefono;
-        @Nullable
+        public int Reserva;
+        public int Telefono;
         public String EstadoMora;
 
     public Alumno() {
+        this.Init();
+    }
+    
+    public Alumno(JsonObject alumnoObject){
+        this.IdAlumno = alumnoObject.getInt("IdAlumno");
+        this.Dv = alumnoObject.getString("Dv");
+        this.Nombres = alumnoObject.getString("Nombres");
+        this.ApePaterno = alumnoObject.getString("ApePaterno");
+        this.ApeMaterno = alumnoObject.getString("ApeMaterno");
+        this.ApeMaterno = alumnoObject.getString("ApeMaterno");
+        this.Correo = alumnoObject.getString("Correo");
+        this.Reserva =  alumnoObject.getInt("Reserva");
+        this.Telefono =  alumnoObject.getInt("Telefono");
+        this.EstadoMora = alumnoObject.getString("EstadoMora");
     }
 
-    public JAXBElement<String> jaxbObjectToXML() {
-    JAXBElement<String> str = null;
-    try {
-        StringWriter writer = new StringWriter();
-        
-        JAXBContext context = JAXBContext.newInstance(this.getClass());
-        QName QName = new QName(this.getClass().getSimpleName());
-        Marshaller m = context.createMarshaller();
 
-        m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE); // To format XML
-        m.setProperty(Marshaller.JAXB_ENCODING, "UTF-16");
-        
-        m.marshal(new JAXBElement(QName,this.getClass(),this),writer);
-        ObjectFactory factory = new ObjectFactory();
-        str = factory.createCrearUsuarioXml(writer.toString());
-    } catch (JAXBException e) {
-        e.printStackTrace();
+    private void Init() {
+        this.IdAlumno = 0;
+        this.Dv = "0";
+        this.ApeMaterno = "0";
+        this.ApePaterno = "0";
+        this.Correo = "0";
+        this.EstadoMora = "0";
+        this.Nombres = "0";
+        this.Reserva = 0;
+        this.Telefono = 0;
     }
-
-    return str;
+    
+    public StringWriter Json(){
+            JsonObject us = Json.createObjectBuilder().
+                    add("IdAlumno", this.IdAlumno).
+                    add("Dv", this.Dv).
+                    add("ApeMaterno", this.ApeMaterno).
+                    add("ApePaterno", this.ApePaterno).
+                    add("Correo", this.Correo).
+                    add("EstadoMora", this.EstadoMora).
+                    add("Nombres", this.Nombres).
+                    add("Reserva", this.Reserva).
+                    add("Telefono", this.Telefono).build();
+            
+            StringWriter string = new StringWriter();
+            JsonWriter writer = Json.createWriter(string);
+            writer.writeObject(us);
+            writer.close(); 
+            
+            return string;
     }
 }

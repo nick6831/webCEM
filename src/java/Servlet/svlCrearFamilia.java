@@ -73,7 +73,7 @@ public class svlCrearFamilia extends HttpServlet {
             
             Usuario user = new Usuario();
             
-            user.IdFamilia = id;
+            user.IdFamilia = Integer.parseInt(id);
             user.Password = pass;
             
             createUser(user);

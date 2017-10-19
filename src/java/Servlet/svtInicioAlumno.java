@@ -54,25 +54,25 @@ public class svtInicioAlumno extends HttpServlet {
             alumnos.Correo = "0";
             alumnos.EstadoMora = "0";
             alumnos.Nombres = "0";
-            alumnos.Reserva = "0";
-            alumnos.Telefono = "0";
+            alumnos.Reserva = 0;
+            alumnos.Telefono = 0;
             
-            String alu = ser.getBasicHttpBindingIServicios().leerAlumno(alumnos.jaxbObjectToXML().getValue());
+            String alu = ser.getBasicHttpBindingIServicios().leerAlumno(alumnos.Json().getBuffer().toString());
             
             JsonReader reader = Json.createReader(new StringReader(alu));
             JsonObject alumnoObject = reader.readObject();
             reader.close();
             
             Alumno nalu = new Alumno();
-            nalu.IdAlumno =  String.valueOf(alumnoObject.getInt("IdAlumno"));
+            nalu.IdAlumno =  alumnoObject.getInt("IdAlumno");
             nalu.Dv = alumnoObject.getString("Dv");
             nalu.Nombres = alumnoObject.getString("Nombres");
             nalu.ApePaterno = alumnoObject.getString("ApePaterno");
             nalu.ApeMaterno = alumnoObject.getString("ApeMaterno");
             nalu.ApeMaterno = alumnoObject.getString("ApeMaterno");
             nalu.Correo = alumnoObject.getString("Correo");
-            nalu.Reserva =  String.valueOf(alumnoObject.getInt("Reserva"));
-            nalu.Telefono =  String.valueOf(alumnoObject.getInt("Telefono"));
+            nalu.Reserva =  alumnoObject.getInt("Reserva");
+            nalu.Telefono =  alumnoObject.getInt("Telefono");
             nalu.EstadoMora = alumnoObject.getString("EstadoMora");
             
             request.setAttribute("alumno", nalu);

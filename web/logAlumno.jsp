@@ -53,7 +53,7 @@
 									</form>
 									<form action="svtLogInAlumno" method="POST" class="login-form">
                                                                             <input name="user" type="text" placeholder="Nombre de usuario" value="nico"/>
-                                                                            <input name="pass" type="password" placeholder="Contraseña" value="nickman6831"/>
+                                                                            <input name="pass" type="password" placeholder="Contraseña" value="nick6831"/>
                                                                           <input type="submit" value="Iniciar Sesion" />
 									  <p class="message">No estas regristrado? <a href="#">Crea una cuenta</a></p>
 									</form>

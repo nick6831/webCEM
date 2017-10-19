@@ -55,17 +55,9 @@ public class svlCrearAlumno extends HttpServlet {
             
             Alumno alu = new Alumno();
             
-//            alu.setIdAlumno(alu.ObtenerRut(id_alumno));
-//            alu.setDv(alu.ObtenerDv(id_alumno));
-//            alu.setNombres(nombre);
-//            alu.setApePaterno(apellido_pa);
-//            alu.setApePaterno(apellido_ma);
-//            alu.setCorreo(correo);
-//            alu.setTelefono(telefono);
-            
             Usuario user = new Usuario();
 
-            user.IdAlumno = id_alumno;
+            user.IdAlumno = Integer.parseInt(id_alumno);
             user.NomUsuario = nombre;
             user.Password = pass;
             

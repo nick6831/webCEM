@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import Servicios_Cem.*;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBException;
@@ -46,68 +47,56 @@ public class svtLogInAlumno extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             HttpSession sesion = request.getSession();
             
+            /*rescatar parametros de JSP*/
             String user = request.getParameter("user");
             String pass = request.getParameter("pass");
             
-            
+            /*Iniciar Servicios*/
             Servicios ser = new Servicios();
+            /*Instancia de usuario*/
             Usuario usuario = new Usuario();
-
-            usuario.IdUsuario = "0";
+            /*Almacenar datos de usuarios*/
             usuario.NomUsuario = user;
             usuario.Password = pass;
-            usuario.IdAlumno = "0";
-            usuario.IdAdministrativo = "0";
-            usuario.IdRol = "0";
-            usuario.IdFamilia = "0";
-            usuario.IdEncargadoCel = "0";
            
-            boolean b = ser.getBasicHttpBindingIServicios().validarUsuario(usuario.jaxbObjectToXML().getValue());
+            /*Serializar usuarios en JSON*/
+            StringWriter string = usuario.Json();
+            
+            /*Metodo para validar si el usuario existe*/
+            boolean b = ser.getBasicHttpBindingIServicios().validarUsuario(string.getBuffer().toString());
+            /*Valida si el usuario existe*/
             if(b)
             {
-                String usua = ser.getBasicHttpBindingIServicios().leerUsuario(usuario.jaxbObjectToXML().getValue());
+                /*Metodo para leer usuario*/
+                String usua = ser.getBasicHttpBindingIServicios().leerUsuario(usuario.Json().getBuffer().toString());
 
                 JsonReader reader2 = Json.createReader(new StringReader(usua));
                 JsonObject usuarioObject = reader2.readObject();
                 reader2.close();
 
-                usuario.IdUsuario = String.valueOf(usuarioObject.getInt("IdUsuario"));
-                usuario.IdAlumno = String.valueOf(usuarioObject.getInt("IdAlumno"));
+                Usuario usuario2 = new Usuario(usuarioObject);
 
+                if (pass.equals(usuario2.Password)) {
+                    Alumno nalu = new Alumno();
+                nalu.IdAlumno = usuarioObject.getInt("IdAlumno");
 
-                Alumno alumnos = new Alumno();
-                alumnos.IdAlumno = String.valueOf(usuarioObject.getInt("IdAlumno"));
-                alumnos.Dv = "0";
-                alumnos.ApeMaterno = "0";
-                alumnos.ApePaterno = "0";
-                alumnos.Correo = "0";
-                alumnos.EstadoMora = "0";
-                alumnos.Nombres = "0";
-                alumnos.Reserva = "0";
-                alumnos.Telefono = "0";
-
-                String alu = ser.getBasicHttpBindingIServicios().leerAlumno(alumnos.jaxbObjectToXML().getValue());
+                String alu = ser.getBasicHttpBindingIServicios().leerAlumno(nalu.Json().getBuffer().toString());
 
                 JsonReader reader = Json.createReader(new StringReader(alu));
                 JsonObject alumnoObject = reader.readObject();
                 reader.close();
+                
+                Alumno alumno = new Alumno(alumnoObject);
 
-                Alumno nalu = new Alumno();
-                nalu.IdAlumno =  String.valueOf(alumnoObject.getInt("IdAlumno"));
-                nalu.Dv = alumnoObject.getString("Dv");
-                nalu.Nombres = alumnoObject.getString("Nombres");
-                nalu.ApePaterno = alumnoObject.getString("ApePaterno");
-                nalu.ApeMaterno = alumnoObject.getString("ApeMaterno");
-                nalu.ApeMaterno = alumnoObject.getString("ApeMaterno");
-                nalu.Correo = alumnoObject.getString("Correo");
-                nalu.Reserva =  String.valueOf(alumnoObject.getInt("Reserva"));
-                nalu.Telefono =  String.valueOf(alumnoObject.getInt("Telefono"));
-                nalu.EstadoMora = alumnoObject.getString("EstadoMora");
+                request.setAttribute("alumno", alumno);
 
-                request.setAttribute("alumno", nalu);
-
-                sesion.setAttribute("usuario", usuario);
+                sesion.setAttribute("usuario", usuario2);
                 request.getRequestDispatcher("Alumno.jsp").forward(request, response);
+                }else{
+                    sesion.invalidate();
+                    response.sendRedirect("logAlumno.jsp");
+                }
+                
             }else
             {
                 sesion.invalidate();
