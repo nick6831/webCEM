@@ -43,12 +43,6 @@ public class svtInicioAlumno extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             
-            HttpSession sesion = request.getSession();
-            
-//            if (sesion==null) {
-//                response.sendRedirect("index.jsp");
-//            }
-
             Usuario user = (Usuario)request.getSession().getAttribute("usuario");
             Servicios ser = new Servicios();
             

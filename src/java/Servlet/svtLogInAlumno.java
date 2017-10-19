@@ -72,6 +72,7 @@ public class svtLogInAlumno extends HttpServlet {
                 reader2.close();
 
                 usuario.IdUsuario = String.valueOf(usuarioObject.getInt("IdUsuario"));
+                usuario.IdAlumno = String.valueOf(usuarioObject.getInt("IdAlumno"));
 
 
                 Alumno alumnos = new Alumno();

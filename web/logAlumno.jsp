@@ -51,7 +51,7 @@
 									  
 									  <p class="message">Estas registrado? <a href="#">Inicia Sesion</a></p>
 									</form>
-									<form action="svtLogInAlumno" method="GET" class="login-form">
+									<form action="svtLogInAlumno" method="POST" class="login-form">
                                                                             <input name="user" type="text" placeholder="Nombre de usuario" value="nico"/>
                                                                             <input name="pass" type="password" placeholder="Contraseña" value="nickman6831"/>
                                                                           <input type="submit" value="Iniciar Sesion" />
