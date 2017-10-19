@@ -1,9 +1,13 @@
+<%@page import="Beans.Usuario"%>
+<%@page import="Beans.Alumno"%>
 <!DOCTYPE HTML>
 <!--
 	Editorial by HTML5 UP
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
+<% Usuario user = (Usuario)request.getSession().getAttribute("usuario"); %>
+<% Alumno alumno = (Alumno)request.getAttribute("alumno"); %>
 <html>
 	<head>
 		<title>Centro de Estudios Montreal</title>
@@ -54,32 +58,32 @@
 									<tbody>
 									<tr>
 											<td>Nombre</td>
-											<td></td>
+                                                                                        <td><%=alumno.Nombres %></td>
 											
 										</tr>
 										<tr>
 											<td>Correo</td>
-											<td></td>
+                                                                                        <td><%=alumno.Correo %></td>
 											
 										</tr>
 										<tr>
 											<td>Telefono</td>
-											<td></td>
+                                                                                        <td><%=alumno.Telefono %></td>
 											
 										</tr>
 										<tr>
 											<td>Estado de mora</td>
-											<td></td>
+                                                                                        <td><%=alumno.EstadoMora %></td>
 											
 										</tr>
 										<tr>
 											<td>Reserva</td>
-											<td></td>
+                                                                                        <td><%=alumno.Reserva%></td>
 											
 										</tr>
 										<tr>
 											<td>Curso</td>
-											<td></td>
+											<td>No registrado</td>
 											
 										</tr>
 									</tbody>
@@ -112,7 +116,7 @@
 									<ul>
 										<li><a href="Alumno.jsp">Ver estado</a></li>
 										<li><a href="postulacion.jsp">Realizar Postulacion</a></li>
-										<li><a href="#">Salir</a></li>
+										<li><a href="svtLogOut">Salir</a></li>
 									</ul>
 								</nav>
 						<!---Tablas--->

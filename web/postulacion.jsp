@@ -121,9 +121,9 @@
 										<h2>Menu</h2>
 									</header>
 									<ul>
-										<li><a href="Alumno.jsp">Ver estado</a></li>
+										<li><a href="svtInicioAlumno">Ver estado</a></li>
 										<li><a href="postulacion.jsp">Realizar Postulacion</a></li>
-										<li><a href="#">Salir</a></li>
+										<li><a href="svtLogOut">Salir</a></li>
 									</ul>
 								</nav>
 						<!---Tablas--->

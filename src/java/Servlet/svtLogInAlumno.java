@@ -7,7 +7,6 @@ package Servlet;
 
 import Beans.Alumno;
 import Beans.Usuario;
-import Beans.XMLSerializer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -17,22 +16,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import Servicios_Cem.*;
-import com.sun.org.apache.xml.internal.serialize.XML11Serializer;
-import java.beans.XMLEncoder;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.text.Document;
-import javax.xml.bind.Element;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.namespace.QName;
-import javax.xml.ws.Response;
-import org.w3c.dom.NodeList;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 
 /**
  *
@@ -59,6 +49,8 @@ public class svtLogInAlumno extends HttpServlet {
             String user = request.getParameter("user");
             String pass = request.getParameter("pass");
             
+            
+            Servicios ser = new Servicios();
             Usuario usuario = new Usuario();
 
             usuario.IdUsuario = "0";
@@ -70,66 +62,51 @@ public class svtLogInAlumno extends HttpServlet {
             usuario.IdFamilia = "0";
             usuario.IdEncargadoCel = "0";
            
-//            Generar XML
-            StringWriter writer = new StringWriter();
-
-            JAXBContext jc = JAXBContext.newInstance(Usuario.class);
-            QName QName = new QName(Usuario.class.getSimpleName());
-            
-            Marshaller marshaller = jc.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-16");
-            
-            marshaller.marshal(new JAXBElement(QName,Usuario.class,usuario),writer);
-            ObjectFactory factory = new ObjectFactory();
-            JAXBElement<String> str = factory.createCrearUsuarioXml(writer.toString());
-            
-            Servicios ser = new Servicios();
-            
-            boolean b = ser.getBasicHttpBindingIServicios().validarUsuario(str.getValue());
-//            String str2 = ser.getBasicHttpBindingIServicios().leerUsuario(str.getValue());
-
-            Alumno alumnos = new Alumno();
-            alumnos.IdAlumno = "17880166";
-            alumnos.Dv = "0";
-            alumnos.ApeMaterno = "0";
-            alumnos.ApePaterno = "0";
-            alumnos.Correo = "0";
-            alumnos.EstadoMora = "0";
-            alumnos.Nombres = "0";
-            alumnos.Reserva = "0";
-            alumnos.Telefono = "0";
-            
-            StringWriter writer2 = new StringWriter();
-
-            JAXBContext jc2 = JAXBContext.newInstance(Alumno.class);
-            QName QName2 = new QName(Alumno.class.getSimpleName());
-            
-            Marshaller marshaller2 = jc2.createMarshaller();
-            marshaller2.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshaller2.setProperty(Marshaller.JAXB_ENCODING, "UTF-16");
-            
-            marshaller2.marshal(new JAXBElement(QName2,Alumno.class,alumnos),writer2);
-            ObjectFactory factory2 = new ObjectFactory();
-            JAXBElement<String> str2 = factory2.createCrearUsuarioXml(writer2.toString());
-
-            Servicios ser2 = new Servicios();
-            
-            String alu = ser2.getBasicHttpBindingIServicios().leerAlumno(str2.getValue());
-            
-
-            
-//            Forma 2 
-//            JAXBContext jaxbContext = JAXBContext.newInstance(Alumno.class);
-//            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-//
-//            StringReader reader = new StringReader(alu);
-//            Alumno alum = (Alumno)unmarshaller.unmarshal(reader);
-
+            boolean b = ser.getBasicHttpBindingIServicios().validarUsuario(usuario.jaxbObjectToXML().getValue());
             if(b)
             {
+                String usua = ser.getBasicHttpBindingIServicios().leerUsuario(usuario.jaxbObjectToXML().getValue());
+
+                JsonReader reader2 = Json.createReader(new StringReader(usua));
+                JsonObject usuarioObject = reader2.readObject();
+                reader2.close();
+
+                usuario.IdUsuario = String.valueOf(usuarioObject.getInt("IdUsuario"));
+
+
+                Alumno alumnos = new Alumno();
+                alumnos.IdAlumno = String.valueOf(usuarioObject.getInt("IdAlumno"));
+                alumnos.Dv = "0";
+                alumnos.ApeMaterno = "0";
+                alumnos.ApePaterno = "0";
+                alumnos.Correo = "0";
+                alumnos.EstadoMora = "0";
+                alumnos.Nombres = "0";
+                alumnos.Reserva = "0";
+                alumnos.Telefono = "0";
+
+                String alu = ser.getBasicHttpBindingIServicios().leerAlumno(alumnos.jaxbObjectToXML().getValue());
+
+                JsonReader reader = Json.createReader(new StringReader(alu));
+                JsonObject alumnoObject = reader.readObject();
+                reader.close();
+
+                Alumno nalu = new Alumno();
+                nalu.IdAlumno =  String.valueOf(alumnoObject.getInt("IdAlumno"));
+                nalu.Dv = alumnoObject.getString("Dv");
+                nalu.Nombres = alumnoObject.getString("Nombres");
+                nalu.ApePaterno = alumnoObject.getString("ApePaterno");
+                nalu.ApeMaterno = alumnoObject.getString("ApeMaterno");
+                nalu.ApeMaterno = alumnoObject.getString("ApeMaterno");
+                nalu.Correo = alumnoObject.getString("Correo");
+                nalu.Reserva =  String.valueOf(alumnoObject.getInt("Reserva"));
+                nalu.Telefono =  String.valueOf(alumnoObject.getInt("Telefono"));
+                nalu.EstadoMora = alumnoObject.getString("EstadoMora");
+
+                request.setAttribute("alumno", nalu);
+
                 sesion.setAttribute("usuario", usuario);
-                response.sendRedirect("Alumno.jsp");
+                request.getRequestDispatcher("Alumno.jsp").forward(request, response);
             }else
             {
                 sesion.invalidate();
@@ -139,6 +116,7 @@ public class svtLogInAlumno extends HttpServlet {
         }
     }
     
+
 
 
 
