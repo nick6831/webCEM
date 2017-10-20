@@ -43,7 +43,8 @@ public class svlCrearAlumno extends HttpServlet {
             throws ServletException, IOException, JAXBException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            
+            /*Recatar datos de JSP*/
             String id_alumno = request.getParameter("id_alumno");
             String nombre = request.getParameter("id_nombre");
             String apellido_pa = request.getParameter("id_apellidop");
@@ -52,46 +53,36 @@ public class svlCrearAlumno extends HttpServlet {
             int telefono= Integer.parseInt(request.getParameter("id_telefono"));
             String pass=request.getParameter("id_pass");
             
-            
+            /*Crear instancia de alumno*/
             Alumno alu = new Alumno();
+            alu.IdAlumno = Integer.parseInt(alu.Rut(id_alumno));
+            alu.Dv = alu.Dv(id_alumno);
+            alu.Nombres = nombre;
+            alu.ApePaterno = apellido_pa;
+            alu.ApeMaterno = apellido_ma;
+            alu.Correo = correo;
+            alu.Telefono = telefono;
             
+            /*Crear instancia de usuario*/
             Usuario user = new Usuario();
-
-            user.IdAlumno = Integer.parseInt(id_alumno);
-            user.NomUsuario = nombre;
+            user.IdAlumno = alu.IdAlumno;
             user.Password = pass;
-            
-            createalum(alu);
-            createUser(user);
-            
            
-       
-           
+            Servicios ser = new Servicios();
+            boolean crearAlumno =ser.getBasicHttpBindingIServicios().crearAlumno(alu.Json());
+            
+            if (crearAlumno) {
+                boolean crearUsuario = ser.getBasicHttpBindingIServicios().crearUsuarioAlumno(user.Json());
+                if (!crearUsuario) {
+                    ser.getBasicHttpBindingIServicios().eliminarAlumno(alu.Json());
+                }else{
+                    
+                }
+            }
+            
             
         }
         
-    }
-
-    private void createUser(Usuario user) throws JAXBException {
-        StringWriter writer= new StringWriter();
-        JAXBContext con = JAXBContext.newInstance(Usuario.class);
-        Marshaller m = con.createMarshaller();
-        m.marshal(new JAXBElement(new QName(Usuario.class.getSimpleName()),Usuario.class,user), writer);
-        ObjectFactory fac = new ObjectFactory();
-        JAXBElement<String> us = fac.createCrearAlumnoXml(writer.toString());
-        CrearUsuario crear = new CrearUsuario();
-        crear.setXml(us);
-    }
-
-    private void createalum(Alumno alu) throws JAXBException {
-        StringWriter writer= new StringWriter();
-        JAXBContext con = JAXBContext.newInstance(Alumno.class);
-        Marshaller m = con.createMarshaller();
-        m.marshal(new JAXBElement(new QName(Alumno.class.getSimpleName()),Alumno.class,alu), writer);
-        ObjectFactory fac = new ObjectFactory();
-        JAXBElement<String> alum = fac.createCrearAlumnoXml(writer.toString());
-        CrearAlumno crear = new CrearAlumno();
-        crear.setXml(alum);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

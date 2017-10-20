@@ -60,27 +60,27 @@ public class svtLogInAlumno extends HttpServlet {
             usuario.Password = pass;
            
             /*Serializar usuarios en JSON*/
-            StringWriter string = usuario.Json();
+            String string = usuario.Json();
             
             /*Metodo para validar si el usuario existe*/
-            boolean b = ser.getBasicHttpBindingIServicios().validarUsuario(string.getBuffer().toString());
+            boolean b = ser.getBasicHttpBindingIServicios().validarUsuario(string);
             /*Valida si el usuario existe*/
             if(b)
             {
                 /*Metodo para leer usuario*/
-                String usua = ser.getBasicHttpBindingIServicios().leerUsuario(usuario.Json().getBuffer().toString());
+                String usua = ser.getBasicHttpBindingIServicios().leerUsuario(usuario.Json());
 
                 JsonReader reader2 = Json.createReader(new StringReader(usua));
                 JsonObject usuarioObject = reader2.readObject();
                 reader2.close();
 
                 Usuario usuario2 = new Usuario(usuarioObject);
-
+                /*Valida contraseña valida*/
                 if (pass.equals(usuario2.Password)) {
                     Alumno nalu = new Alumno();
                 nalu.IdAlumno = usuarioObject.getInt("IdAlumno");
 
-                String alu = ser.getBasicHttpBindingIServicios().leerAlumno(nalu.Json().getBuffer().toString());
+                String alu = ser.getBasicHttpBindingIServicios().leerAlumno(nalu.Json());
 
                 JsonReader reader = Json.createReader(new StringReader(alu));
                 JsonObject alumnoObject = reader.readObject();

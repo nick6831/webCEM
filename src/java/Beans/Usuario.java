@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import com.sun.istack.Nullable;
 import java.io.StringWriter;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -50,7 +51,7 @@ public class Usuario {
         this.IdEncargadoCel = 0;
     }    
     
-    public StringWriter Json(){
+    public String Json(){
         JsonObject us = Json.createObjectBuilder().
                     add("IdUsuario", this.IdUsuario).
                     add("NomUsuario", this.NomUsuario).
@@ -66,8 +67,8 @@ public class Usuario {
         writer.writeObject(us);
         writer.close();
         
-        return string;
+        return string.getBuffer().toString();
     }
-
+    
 
 }

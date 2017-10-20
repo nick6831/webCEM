@@ -7,7 +7,7 @@ package Servlet;
 
 import Beans.Alumno;
 import Beans.Usuario;
-import Servicios_Cem.Servicios;
+import Servicios_Cem.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
@@ -57,7 +57,7 @@ public class svtInicioAlumno extends HttpServlet {
             alumnos.Reserva = 0;
             alumnos.Telefono = 0;
             
-            String alu = ser.getBasicHttpBindingIServicios().leerAlumno(alumnos.Json().getBuffer().toString());
+            String alu = ser.getBasicHttpBindingIServicios().leerAlumno(alumnos.Json());
             
             JsonReader reader = Json.createReader(new StringReader(alu));
             JsonObject alumnoObject = reader.readObject();

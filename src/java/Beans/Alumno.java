@@ -56,7 +56,7 @@ public class Alumno {
         this.Telefono = 0;
     }
     
-    public StringWriter Json(){
+    public String Json(){
             JsonObject us = Json.createObjectBuilder().
                     add("IdAlumno", this.IdAlumno).
                     add("Dv", this.Dv).
@@ -73,6 +73,14 @@ public class Alumno {
             writer.writeObject(us);
             writer.close(); 
             
-            return string;
+            return string.getBuffer().toString();
+    }
+    
+    public String Rut(String rut){
+        return rut.substring(0,rut.length()-2);
+    }
+
+    public String Dv(String rut){
+        return rut.substring(rut.length()-1);
     }
 }

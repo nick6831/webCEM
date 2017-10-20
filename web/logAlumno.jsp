@@ -39,15 +39,15 @@
 									</header>
 								<div class="login-page">
 								  <div class="form">
-                                                                      <form action="svlCrearAlumno" class="register-form">
-									  <input type="text" id="id_alumno" name="rut" required oninput="checkRut(this)"  placeholder="Rut"/>
-									  <input type="text" id="id_nombre" required placeholder="Nombre"/>
-									  <input type="text" id="id_apellidop" required placeholder="Apellido Paterno"/>
-									  <input type="text" id="id_apellidom" required placeholder="Apellido Materno"/>
-									  <input type="text" id="correo" required placeholder="Correo"/>
-									  <input type="text" id="id_telefono" required placeholder="Telefono"/>
-									  <input type="password" id="id_pass" placeholder="password"/>
-									  <input type="submit" value="Crear" />
+                                                                      <form action="svlCrearAlumno" method="POST" class="register-form">
+									  <input type="text" id="id_alumno" name="id_alumno" required oninput="checkRut(this)"  placeholder="Rut"/>
+									  <input type="text" id="id_nombre" name="id_nombre" required placeholder="Nombre"/>
+									  <input type="text" id="id_apellidop" name="id_apellidop" required placeholder="Apellido Paterno"/>
+									  <input type="text" id="id_apellidom" name="id_apellidom" required placeholder="Apellido Materno"/>
+									  <input type="text" id="correo" name="id_correo" required placeholder="Correo"/>
+									  <input type="text" id="id_telefono" name="id_telefono" required placeholder="Telefono"/>
+									  <input type="password" id="id_pass" name="id_pass" placeholder="password"/>
+									  <input type="submit" value="Iniciar Sesion" />
 									  
 									  <p class="message">Estas registrado? <a href="#">Inicia Sesion</a></p>
 									</form>

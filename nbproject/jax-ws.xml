@@ -7,7 +7,6 @@
       <local-wsdl-file>localhost_6627/Servicios.svc.singlewsdl.wsdl</local-wsdl-file>
       <package-name forceReplace="true">Servicios_Cem</package-name>
       <catalog-file>catalog.xml</catalog-file>
-      <use-dispatch>true</use-dispatch>
       <wsimport-options>
         <wsimport-option>
           <wsimport-option-name>extension</wsimport-option-name>
