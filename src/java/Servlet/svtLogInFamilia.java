@@ -5,7 +5,7 @@
  */
 package Servlet;
 
-import Beans.Usuario;
+import Beans.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import Servicios_Cem.*;
 
 /**
  *
@@ -41,14 +42,30 @@ public class svtLogInFamilia extends HttpServlet {
             String pass = request.getParameter("pass");
             
             Usuario usuario = new Usuario();
+            FamiliaAnfitriona fa = new FamiliaAnfitriona();
             
-//            usuario.setIdAlumno("");
-//            usuario.setNombreUsuario(user);
-//            usuario.setPassword(pass);
-//            usuario.setIdAdministrativo("");
-//            usuario.setIdRol("");
-//            usuario.setIdEncargadoCel("");
-//            usuario.setIdFamilia("");
+            usuario.NomUsuario = user;
+            usuario.Password = pass;
+            
+            Servicios ser = new Servicios();
+            
+            boolean validaUsuario = ser.getBasicHttpBindingIServicios().validarUsuario(usuario.JsonFamilia());
+
+            if (validaUsuario) {
+                            
+                String usua = ser.getBasicHttpBindingIServicios().leerUsuario(usuario.JsonFamilia());
+                Usuario usu = new Usuario(usua);
+                fa.IdFamilia = usu.IdFamilia;
+                
+                String fam = ser.getBasicHttpBindingIServicios().leerFamiliaAnfitriona(fa.Json());
+                FamiliaAnfitriona fam2 = new FamiliaAnfitriona(fam);
+                
+                request.setAttribute("Familia", fam2);
+
+                sesion.setAttribute("usuario", usu);
+                request.getRequestDispatcher("familia.jsp").forward(request, response);
+                
+            }
             
             sesion.setAttribute("usuario", usuario);
             

@@ -5,9 +5,11 @@
  */
 package Beans;
 
+import java.io.StringReader;
 import java.io.StringWriter;
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonReader;
 import javax.json.JsonWriter;
 
 /**
@@ -30,7 +32,12 @@ public class Alumno {
         this.Init();
     }
     
-    public Alumno(JsonObject alumnoObject){
+    public Alumno(String alu){
+        
+        JsonReader reader = Json.createReader(new StringReader(alu));
+        JsonObject alumnoObject = reader.readObject();
+        reader.close();
+        
         this.IdAlumno = alumnoObject.getInt("IdAlumno");
         this.Dv = alumnoObject.getString("Dv");
         this.Nombres = alumnoObject.getString("Nombres");

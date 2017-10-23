@@ -16,14 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import Servicios_Cem.*;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBException;
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
 
 /**
  *
@@ -60,7 +55,7 @@ public class svtLogInAlumno extends HttpServlet {
             usuario.Password = pass;
            
             /*Serializar usuarios en JSON*/
-            String string = usuario.Json();
+            String string = usuario.JsonAlumno();
             
             /*Metodo para validar si el usuario existe*/
             boolean b = ser.getBasicHttpBindingIServicios().validarUsuario(string);
@@ -68,30 +63,22 @@ public class svtLogInAlumno extends HttpServlet {
             if(b)
             {
                 /*Metodo para leer usuario*/
-                String usua = ser.getBasicHttpBindingIServicios().leerUsuario(usuario.Json());
+                String usua = ser.getBasicHttpBindingIServicios().leerUsuario(usuario.JsonAlumno());
 
-                JsonReader reader2 = Json.createReader(new StringReader(usua));
-                JsonObject usuarioObject = reader2.readObject();
-                reader2.close();
-
-                Usuario usuario2 = new Usuario(usuarioObject);
+                Usuario usuario2 = new Usuario(usua);
                 /*Valida contraseña valida*/
                 if (pass.equals(usuario2.Password)) {
                     Alumno nalu = new Alumno();
-                nalu.IdAlumno = usuarioObject.getInt("IdAlumno");
+                    nalu.IdAlumno = usuario2.IdAlumno;
 
-                String alu = ser.getBasicHttpBindingIServicios().leerAlumno(nalu.Json());
+                    String alu = ser.getBasicHttpBindingIServicios().leerAlumno(nalu.Json());
 
-                JsonReader reader = Json.createReader(new StringReader(alu));
-                JsonObject alumnoObject = reader.readObject();
-                reader.close();
-                
-                Alumno alumno = new Alumno(alumnoObject);
+                    Alumno alumno = new Alumno(alu);
 
-                request.setAttribute("alumno", alumno);
+                    request.setAttribute("alumno", alumno);
 
-                sesion.setAttribute("usuario", usuario2);
-                request.getRequestDispatcher("Alumno.jsp").forward(request, response);
+                    sesion.setAttribute("usuario", usuario2);
+                    request.getRequestDispatcher("Alumno.jsp").forward(request, response);
                 }else{
                     sesion.invalidate();
                     response.sendRedirect("logAlumno.jsp");

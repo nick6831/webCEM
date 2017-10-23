@@ -15,14 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import Beans.Alumno;
 import Beans.Usuario;
 import Servicios_Cem.*;
-import javax.xml.bind.JAXBElement;
-import java.io.StringWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.namespace.QName;
 /**
  *
  * @author nickm
@@ -72,11 +67,11 @@ public class svlCrearAlumno extends HttpServlet {
             boolean crearAlumno =ser.getBasicHttpBindingIServicios().crearAlumno(alu.Json());
             
             if (crearAlumno) {
-                boolean crearUsuario = ser.getBasicHttpBindingIServicios().crearUsuarioAlumno(user.Json());
+                boolean crearUsuario = ser.getBasicHttpBindingIServicios().crearUsuario(user.JsonAlumno());
                 if (!crearUsuario) {
                     ser.getBasicHttpBindingIServicios().eliminarAlumno(alu.Json());
                 }else{
-                    
+                    response.sendRedirect("logAlumno.jsp");
                 }
             }
             
